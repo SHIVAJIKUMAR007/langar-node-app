@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>my orders</title>
+ <% include ./bootstrap.ejs %> 
+</head>
+<body style="padding-left:20px;padding-right:20px;padding-bottom:50px;">
+<% if(result){
+  %>
+    <script> alert('<%= result %>')</script>
+  <%
+} %> 
+<nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+            <a class="navbar-brand" href="/users/"> <img src="../../images/langar/logo.jfif" style="width:7vw;" class="img-fluid "> </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav ml-auto">
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/users/"><h3>HOME </h3></a>
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/users/cart/"><h3>CART </h3></a>
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/users/rate/"><h3>RATE US </h3></a>
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/users/contact/"><h3>CONTACT </h3></a>
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/users/help/"><h3>HELP </h3></a>
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/logout/"><h3>LOGOUT </h3></a>
+              </div>
+            </div>
+          </nav>
+
+<b><hr><hr><p style="padding-left:20px;font-size:20px; font-family:Franklin Gothic Medium;">
+ YOUR PENDING ORDERS
+</p><hr><hr></b>
+<br>
+<a href="/users/" style="text-decoration:none; width:20%; "><button class=" btn-lg btn-primary"> Back to shopping</button></a>
+<br><br>
+<main id="main-div">
+    <div id="mainHeader">  </div>
+    <div id="mainBody">  </div>
+    <div id="mainFooter">  </div>
+  </main>
+
+
+<script>
+   fetch('/api/ordertable/data').then(res => res.json()).then(data =>{
+      if(data.length > 0){
+            data.map( orderData =>{
+          let totalMoney = orderData.amount_to_rec
+          let MainDiv = document.querySelector('#mainHeader')
+            let div = document.createElement('div')
+            div.innerHTML = `<div class=" container-fluid mb-2" style="border-top:1px solid black; border-bottom : 1px solid black;">
+            <div class="row">
+                <div>  <p>OTP : ${orderData.otp}</p> </div> <div class="ml-auto"> <p>REF NO : ${orderData.o_id}</p> </div>
+            </div>
+           </div>`
+            MainDiv.append(div)
+            
+              fetch('/api/myorder/data/'+orderData.o_id).then(res => res.json()).then(myorderData =>{
+                myorderData.map( myorderData =>{
+                  fetch('/api/myorder/food/'+myorderData.f_id).then(res => res.json()).then(foodData =>{
+                      foodData.map((foodData, i) =>{
+                        let mainBody = document.querySelector('#mainBody')
+                        let div2 = document.createElement('div')
+                        div2.innerHTML = `<div class="container-fluid mb-2" style="border-bottom: 1px solid red; ">
+                            <div class="row">
+                                <div class=" col-lg-3 col-md-4 col-12">
+                                    <img src="../../images/shop/food/${foodData.image}" alt= ${foodData.name} class=" img-fluid"
+                                    style="width: 270px; height: 180px; margin: 0 120px 30px 30px;">
+                                </div>
+                                <div class="clo-lg-9 col-md-8 col-12">
+                                    <div class="row"> <div><h1>${foodData.name}</h1></div> <div class="ml-auto"><h2>Rs ${myorderData.quantity*foodData.price}/-</h2></div></div>
+                                    <div> <h3>QUANTITY = ${myorderData.quantity}</h3>
+                                        <h3>rate = Rs ${foodData.price} /-</h3> </div>
+                                </div>
+                            </div>
+                        </div>`
+                        mainBody.append(div2)
+                      })
+                  })
+                })
+              })
+            
+            let mainFooter = document.querySelector('#mainFooter')
+            let div3 = document.createElement('div')
+            div3.innerHTML = `
+                  <div class=" container-fluid mb-2" style="border-top:1px solid black; border-bottom : 1px solid black;">
+                      <div class="row">
+                          <div><h4>TOTAL AMOUNT TO PAY<span style="font-size:1rem">(including all taxes) </span></h4></div> <div class="ml-auto"><h4>Rs ${totalMoney}/-</h4></div>
+                      </div>
+                    </div>`
+            mainFooter.append(div3)
+        })
+      }
+      else{
+        document.querySelector('#main-div').innerHTML =
+        `<h1 class=" text-center m-5 "> You have no pending orders</h1>`
+      }
+   })
+</script>
+<br><br>
+
+</body>
+</html>

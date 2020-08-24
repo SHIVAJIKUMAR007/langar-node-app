@@ -1,0 +1,142 @@
+<html>
+    <head>
+    <title> LANGAR : SIGNUP </title>
+    <% include ./bootstrap.ejs %>
+    <style>
+    body
+    {
+    background-image:url('../images/langar/signup.jpeg');
+    height:100%;
+    background-repeat: no-repeat; 
+    background-size: cover;
+    }
+    .signup
+    {
+        width: 30%;
+        min-width: 350px;
+        background: rgb(90, 9, 9);
+        color: #fff;
+        top:80%;
+        left:50%;
+        position: absolute;
+        transform: translate(-50%,-50%);
+        box-sizing: border-box;
+        padding: 40px 30px;
+        border-radius:20px;
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .signup label{
+        margin: 0;
+        padding: 0;
+        font-weight: bold;
+    }
+    .signup input{
+        margin-bottom: 20px;
+    }
+    .signup input[type="text"],input[type="email"], input[type="password"] 
+    {
+        border: none;
+        border-bottom: 1px solid #fff;
+        background: transparent;
+        outline: none;
+        height: 40px;
+        color: #fff;
+        font-size: 16px;
+        width: 100%;
+
+    }
+    .signup button
+    {
+        border: none;
+        outline: none;
+        height: 40px;
+        background: #189ec7;
+        color: #fff;
+        font-size: 18px;
+        border-radius: 30px;
+    }
+    .signup button:hover
+    {
+        cursor: pointer;
+        background: #ffc107;
+        color: #000;
+    }
+    </style>
+    <script>
+        function validation()
+    {
+        var result=true;
+        var i=document.getElementsByTagName("input");
+        if(i[0].value.length==0 || i[2].value.length<=6)
+        {
+        var result=false;
+        alert("Please fill the form correctly");
+        }
+        return(result);
+    }
+    </script>
+    </head>
+    <body>
+     
+        <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+            <a class="navbar-brand" href="/"> <img src="../images/langar/logo.jfif" style="width:7vw;" class="img-fluid "> </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav ml-auto">
+                <a class="nav-item nav-link text-center text-white mx-5" href="/"><h3>HOME</h3></a>
+                <a class="nav-item nav-link text-center text-white mx-5" href="/contact/"><h3>CONTACT </h3></a>
+              </div>
+            </div>
+          </nav>
+
+
+
+          <form method="post" action="/signup/"  onsubmit="return validation()">
+            <div class="signup">
+            <h1 style="text-align: center;">SIGN UP</h1>
+
+            <% if(fail){
+                %>  
+                  <h5 class=" alert alert-danger"> <%= fail %> </h5>
+                <%
+            }else{ } %>
+        
+                <label>Username :
+                    <br><br>
+                    <input type="text" name="username" placeholder="Enter Username" required>
+                </label><br>
+    
+                <label>Email :
+                    <br><br>
+                    <input type="email" name="email" placeholder="Enter Email" required>
+                </label><br>
+                
+                <label>Password :
+                    <br><br>
+                    <input type="Password" name="pass" placeholder="Enter Password Greater than 6 digits" required>
+                </label><br>
+                
+                <label>Confirm Password :
+                    <br><br>
+                    <input type="Password" name="confirm" placeholder="Re-enter Password" required>
+                </label><br>
+                <label>Contact Number :<br><br>
+                <input type="text" name="contact" placeholder="Enter Your Phone Number" required>
+            </label><br>
+                <button type="submit">submit</button>
+
+                <h3 class="mt-4 text-center"> Already registered ? <a href="/login/"> LOGIN  </a> </h3>
+                
+                <!-- <input type="submit"> -->
+            
+    </div>
+    </form>
+
+
+    </body>
+    </html> 

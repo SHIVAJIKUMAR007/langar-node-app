@@ -1,0 +1,124 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <% include ./bootstrap.ejs %>
+    <link rel="shortcut icon" href="./images/langar/logo.ico" type="image/x-icon">
+    <title>langar : restaurant</title>
+</head>
+<body>
+    
+    <%  resData.forEach(function (result) {
+        var src = "../images/shop/"+result.image
+        %>  
+        <div class="container-fluid" style="background-image: url('<%= src %>'); background-repeat: no-repeat;background-size: cover;" >
+        <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+            <a class="navbar-brand" href="/"> <img src="../images/langar/logo.jfif" style="width:7vw;" class="img-fluid "> </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav ml-auto">
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/seller/uploadnewdish/<%= rid %>"><h3>UPLOAD A NEW DISH </h3></a>
+                <a class="nav-item nav-link text-center text-warning mx-5" href="../seller/logout/"><h3>LOGOUT </h3></a>
+              </div>
+            </div>
+          </nav>
+            
+          <h1 class="mt-5" style="font-size: 70px; text-align: center;color:white; font-weight: 300; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; ">
+            <strong> <%= result.name %> </strong> 
+            </h1>
+            <h2 style="font-size: 25px; text-align: center; color:rgb(7, 3, 194); font-weight: 300; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ">
+                <strong><%= result.address %></strong> 
+            </h2>
+            <h4 style="font-size: 25px; text-align: center; color:skyblue; font-weight: 300; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif ">
+                <strong><%= result.tagline %> </strong> 
+            </h4>
+
+<br> <br> <br>
+    </div>
+
+    <br><br>
+    <% if(pass)
+      %> <h1 class="alert-success container text-center"><%= pass %></h1>
+    %> 
+
+    <main id="main">
+         <div id="headDiv"></div>
+         <div id="bodyDiv"></div>
+         <div id="footerDiv"></div>    
+    </main>
+        <%
+       
+    }) %> 
+
+
+
+    <script>
+     fetch(`/api/api/resOrder/`+ `<%= rid %>`  ).then(resp => resp.json()).then(data =>{
+         data.map(order => {
+             let div = document.createElement('div')
+            let serNo=1;
+              div.innerHTML = ` ${serNo} )
+              <br> <h4 style="border-bottom:1px solid black;border-top:1px solid black;padding-right:30px;padding-left:30px; height:145px;">
+                <p style="clear: left; float:left;">NAME OF CUSTOMER : ${order.name} </p> <p style="text-align:right;">REF NO : ${order.o_id}</p>
+                <p style="clear: left; float:left;">CONTACT :${order.contact} </p> <p style="text-align:right;">EMAIL : ${order.email}</p>
+                <p style="clear: left; float:left;">ADDRESS : ${order.address}, ${order.landmark}, ${order.state} -  ${order.pincode}</p>
+                  </h4>`
+                  document.getElementById('headDiv').append(div)
+
+                fetch('/api/myorder/data/'+order.o_id+'/'+order.username).then(resp => resp.json()).then(data2 =>{
+                  data2.map(myorderData =>{
+                    fetch('/api/myorder/food/'+myorderData.f_id).then(resp => resp.json()).then(data3 =>{
+                      data3.map(foodData =>{
+                        let div2 = document.createElement('div')
+                         div2.innerHTML =`<div style="padding:20px; border-bottom:1px solid red; height:210px">
+                                            <div>
+                                                <div ><img src="../../images/shop/food/${foodData.image}" style="margin-bottom:30px; margin-left:30px; margin-right:120px; height:180px; width:270px; clear: left; float:left;"> </div>
+                                              <div>
+                                                  <h1>
+                                                  <div style="float:left;  "> ${foodData.name} </div>
+                                                  <div style="text-align: right; padding-right:50px;">Rs ${myorderData.quantity*foodData.price}/- </div>
+                                                  </h1>
+                                                  <h3>QUANTITY = ${myorderData.quantity}</h3>
+                                                  <h3>rate = Rs ${foodData.price} /-</h3>      
+                                              </div> 
+                                            </div>
+                                            </div>`
+
+                          document.getElementById('bodyDiv').append(div2)
+                                              })
+                                            })
+                   
+                  })
+                })
+
+         let div3 = document.createElement('div')
+         div3.innerHTML = `<br><h4 style="border-bottom:1px solid black;border-top:1px solid black;padding-right:30px;padding-left:30px;" >
+            <p style="float:left;">TOTAL AMOUNT TO PAY =  Rs ${order.amount_to_rec}/- </p>
+            <p ><form action="/seller/checkotp/${order.o_id}" method="POST" style="margin-left:1000px" >     
+            <label>ENTER THE OTP HERE : </label>
+            <input type="text" name="otp" placeholder="ENTER THE OTP" >
+            <input class="btn btn-outline-success font-weight-bold" type="submit">     
+            </form></p>
+              </h4><br><br><br><br>`
+   document.getElementById('footerDiv').append(div3)
+
+   serNo++
+         })
+     })  
+    
+   </script>
+   
+   
+    
+        
+
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <% include ./bootstrap.ejs %>
+    <link rel="shortcut icon" href="../images/langar/logo.ico" type="image/x-icon">
+    <title>langar : restaurant</title>
+</head>
+<body>
+
+  <!-- <script>
+    if(alert1){
+      alert(alert1);
+    }
+  </script> -->
+
+    <%  resdata.forEach(function (results) {
+        var src = "../../images/shop/"+results.image
+        %>  
+        <div class="container-fluid" style="background-image: url('<%= src %>'); background-repeat: no-repeat;background-size: cover;" >
+          <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+            <a class="navbar-brand" href="/users/"> <img src="../../images/langar/logo.jfif" style="width:7vw;" class="img-fluid "> </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav ml-auto">
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/users/"><h3>HOME </h3></a>
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/users/order/"><h3>MY ORDERS </h3></a>
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/users/cart/"><h3>CART </h3></a>
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/users/rate/"><h3>RATE US </h3></a>
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/logout/"><h3>LOGOUT </h3></a>
+              </div>
+            </div>
+          </nav>
+            
+          <h1 class="mt-5" style="font-size: 70px; text-align: center;color:white; font-weight: 300; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; ">
+            <strong> <%= results.name %> </strong> 
+            </h1>
+            <h2 style="font-size: 25px; text-align: center; color:rgb(7, 3, 194); font-weight: 300; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ">
+                <strong><%= results.address %></strong> 
+            </h2>
+            <h4 style="font-size: 25px; text-align: center; color:skyblue; font-weight: 300; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif ">
+                <strong><%= results.tagline %> </strong> 
+            </h4>
+            <h2 style="color:rgb(239, 245, 239);" class=" text-center my-3">
+                ★  <%= results.av_rate  %> ( <%= results.num_of_rate  %> reviews )
+            </h2> 
+
+<br> <br> <br>
+    </div>
+    
+        <div class="my-3 pb-3 pt-1" style="background-color: maroon;">
+             <% if(fooddata.length >0 ){
+                  fooddata.forEach(function (result) {
+                    var src = "../../images/shop/food/" + result.image 
+                    %> 
+                      
+                        <div class="mt-5 bg-warning  px-3 mx-3" style="border: 1px solid black; border-radius: 10px; ">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-5">
+                                 <img src = <%= src %> class="img-fluid w-100 p-3 ">
+                            </div>
+
+                            <div class=" col-lg-9 col-md-9 col-7">
+                                 <h1 class="text-center mt-5 mb-3" style="color: black;">
+                                   <span class="text-center"><%= result.name %></span> 
+                                 </h1>
+                                 <h4 class="text-center"><span> Rs <%= result.price %> only</span></h4>
+                                 <h3 class=" mt-2 mb-3 text-center" style="color: black;">
+                                   <%=  result.tagline  %> 
+                                 </h3>
+                                 <center>
+                                 <form action="/users/addcart/<%= result.f_id  %>/<%= results.r_id %>" method="post" class="container form-group" >
+                                <input type ="number"  name = "quantity" min="0" max="10" placeholder="quantity" class=" form-control w-25" autocomplete="off" required>
+                                <br><button class=" btn btn-primary"> ADD TO CART </button>
+                                </form> </center>
+                            </div>
+                        </div>
+                        </div>   
+                   
+                    <%
+                  })
+             } 
+    }) %> 
+        </div>
+<div class="mx-3">
+
+  <h1 style="font-weight:bold;margin-bottom:0px;"> ABOUT US</h1>
+<hr/>
+<h2>Terms of Service:</h2>
+<table class="table " style="font-size:20px;margin-right:0px;">
+<tr>
+ <td>1. Acceptance of terms</td>
+ <td>2.eligibility to use the service</td>
+ <td>3.changes to the terms</td>
+</tr>
+<tr>
+<td>4.translation of terms<td>
+<td>
+ 5.provision of the services being offered by Langar</td>
+ <td>
+ 6.use of services by you or user</td>
+</tr>
+<tr>
+<td>
+ 7.Content guidelines and privacy policy</td><td>8.Restrictions on use</td><td>9.User feedback</td></tr>
+ <tr><td>10.Advertising</td><td>11.Additional terms and conditions</td></tr>
+</p>
+  
+</div>
+
+</body>
+</html>
+
+

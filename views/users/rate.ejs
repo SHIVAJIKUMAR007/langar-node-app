@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>rate us</title>
+<% include ./bootstrap.ejs %> 
+<style>
+.rate-area {
+  float: left;
+  border-style: none;
+}
+.rate-area:not(:checked) > input {
+
+  position: absolute;
+
+  top: -9999px;
+
+  clip: rect(0,0,0,0);
+}
+ 
+.rate-area:not(:checked) > label {
+  float: right;
+  width: 1em;
+    padding: 0 .1em;
+  overflow: hidden;
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 400%;
+  line-height: 1.2;
+  color: lightgrey;
+  text-shadow: 1px 1px #bbb;
+}
+.rate-area:not(:checked) > label:before { content: '★ '; }
+.rate-area > input:checked ~ label {
+  color: gold;
+  text-shadow: 1px 1px #c60;
+  font-size: 450% !important;
+}
+.rate-area:not(:checked) > label:hover, .rate-area:not(:checked) > label:hover ~ label { color: gold; }
+.rate-area > input:checked + label:hover, .rate-area > input:checked + label:hover ~ label, .rate-area > input:checked ~ label:hover, .rate-area > input:checked ~ label:hover ~ label, .rate-area > label:hover ~ input:checked ~ label {
+  color: gold;
+  text-shadow: 1px 1px goldenrod;
+}
+.rate-area > label:active {
+  position: relative;
+  top: 2px;
+  left: 2px;
+}
+</style>
+</head>
+<body style="padding-left:20px;padding-right:20px;padding-bottom:50px;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+        <a class="navbar-brand" href="/users/"> <img src="../../images/langar/logo.jfif" style="width:7vw;" class="img-fluid "> </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav ml-auto">
+            <a class="nav-item nav-link text-center text-warning mx-5" href="/users/"><h3>HOME </h3></a>
+            <a class="nav-item nav-link text-center text-warning mx-5" href="/users/order/"><h3>MY ORDERS </h3></a>
+            <a class="nav-item nav-link text-center text-warning mx-5" href="/users/cart/"><h3>CART </h3></a>
+            <!-- <a class="nav-item nav-link text-center text-warning mx-5" href="/users/rate/"><h3>RATE US </h3></a> -->
+            <a class="nav-item nav-link text-center text-warning mx-5" href="/users/contact/"><h3>CONTACT </h3></a>
+            <a class="nav-item nav-link text-center text-warning mx-5" href="/users/help/"><h3>HELP </h3></a>
+            <a class="nav-item nav-link text-center text-warning mx-5" href="/logout/"><h3>LOGOUT </h3></a>
+          </div>
+        </div>
+      </nav>
+
+<b><hr><hr><p style="padding-left:20px;font-size:20px; font-family:Franklin Gothic Medium;">
+ RATE US
+</p><hr><hr></b>
+<br><br>
+<a href="/users/" style="text-decoration:none; width:20%; "><div style="font-family:Lucida Sans;border-radius:6px; border:2px solid black; width:20%;">
+    <p style="color:black; font-weight:bold; text-align:center;">BACK TO SHOPPING</p>
+</div></a>
+<br><br>
+  <main id="MainDiv">
+     
+  </main>
+<br><br>
+
+<script>
+  fetch('/api/ratepage/data').then(resp => resp.json()).then(order =>{
+                if(order.length > 0){
+                    serNo = 1
+                    order.map(order => {
+                        let rid = order.r_id
+                        let oid = order.o_id 
+                        fetch('/api/restaurant/'+rid).then(res => res.json()).then(resData =>{
+                            resData.map(resData =>{
+                              let div = document.createElement('div')
+                              div.innerHTML = `
+                                <div style=" border-radius:20px; padding-left:50px; padding-top:10px; padding-bottom:10px; border:1px solid black;">${serNo } ).&nbsp; RESTAURANT NAME :${resData.name}<br><br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REF NO : ${oid}<br><br>
+
+                                <form action="/insert_rate/${rid}/${oid}"   method="POST"> <ul class="rate-area">
+                                <input type="radio" id="5-star" name="rating" value="5" /><label for="5-star" title="Amazing">5 stars</label>
+                                <input type="radio" id="4-star" name="rating" value="4" /><label for="4-star" title="Good">4 stars</label>
+                                <input type="radio" id="3-star" name="rating" value="3" /><label for="3-star" title="Average">3 stars</label>
+                                <input type="radio" id="2-star" name="rating" value="2" /><label for="2-star" title="Not Good">2 stars</label>
+                                <input type="radio" id="1-star" name="rating" value="1" /><label for="1-star" title="Bad">1 star</label>
+                                </ul><br><br>
+                                <button style="margin-left:200px;" class="btn btn-primary">submit</button></form>
+                                    
+                                    <br><br>
+                                    <form action="/not_rate/${rid}/${oid} method="post"><input type="submit" value="DON'T WANT TO RATE"></form>
+                                </div> <br> 
+                                `
+                                const MainDiv = document.querySelector('#MainDiv')
+                                MainDiv.append(div)
+                            })
+                        })
+                        serNo ++
+                    })
+                }
+                else{
+                    `
+                    <h1 class="text-center mt-5"> You have not shop anything yet or previous orders are rated. <h1>
+                    `
+                }
+           })
+</script>
+
+</body>
+</html>

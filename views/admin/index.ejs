@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be A Partner Of Langar</title>
+    <% include ./bootstrap.ejs %> 
+</head>
+<body style= "background-color:aqua;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+        <a class="navbar-brand" href="/"> <img src="../images/langar/logo.jfif" style="width:7vw;" class="img-fluid "> </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav ml-auto">
+            <a class="nav-item nav-link text-center text-warning mx-5" href="/seller/login"><h3>LOGIN </h3></a>
+            <a class="nav-item nav-link text-center text-warning mx-5" href="/seller/signup"><h3>SIGN UP </h3></a>
+          </div>
+        </div>
+      </nav>
+
+      <div style="width: 100vw; height: 100vh;" class=" d-flex flex-column justify-content-center align-items-center">
+          <div>
+            <h1 class=" display-3 font-weight-bold text-white">Welcome to Langar</h1>
+             <h2 class=" text-capitalize text-center text-white"> Increase Your Sells by joining us.</h2>
+             <center><a href="/seller/signup" style="border-radius: 50px;" class="mt-4 btn btn-success px-4 text-white font-weight-bold"> JOIN US NOW</a></center>
+             
+          </div>
+          
+          <div class=" mt-5 pt-5">
+            <h1 class="text-center text-white"> OUR PARTNERS </h1>
+            <hr style="height: 3px;" class="bg-white mx-auto w-50 text-center" />
+            <div class=" d-flex justify-content-center align-items-center">
+                <% 
+                data.map(data =>{  
+                    %>
+                     <div>
+                        <img style="width: 300px;" class=" p-5 img-fluid" src="<%= "../../images/shop/"+data.image %>" alt="<%= data.name %> <%= data.tagline %>" >
+                        <h3 class=" text-center text-white"><%= data.name %></h3>
+                        <p class=" text-center text-white"><%= data.tagline %> </p>
+                    </div> 
+                    <%
+                })
+                %> 
+            </div>
+         </div>
+      </div>
+</body>
+</html>

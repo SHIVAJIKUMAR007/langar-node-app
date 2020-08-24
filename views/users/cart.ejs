@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>cart</title>
+<% include ./bootstrap.ejs %> 
+</head>
+<body style="padding-left:20px;padding-right:20px;padding-bottom:50px;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+        <a class="navbar-brand" href="/users/"> <img src="../../images/langar/logo.jfif" style="width:7vw;" class="img-fluid "> </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav ml-auto">
+            <a class="nav-item nav-link text-center text-warning mx-5" href="/users/"><h3>HOME </h3></a>
+            <a class="nav-item nav-link text-center text-warning mx-5" href="/users/order/"><h3>MY ORDERS </h3></a>
+            <a class="nav-item nav-link text-center text-warning mx-5" href="/users/rate/"><h3>RATE US </h3></a>
+            <a class="nav-item nav-link text-center text-warning mx-5" href="/users/contact/"><h3>CONTACT </h3></a>
+            <a class="nav-item nav-link text-center text-warning mx-5" href="/users/help/"><h3>HELP </h3></a>
+            <a class="nav-item nav-link text-center text-warning mx-5" href="/logout/"><h3>LOGOUT </h3></a>
+          </div>
+        </div>
+      </nav>
+
+<b><hr><hr><p style="padding-left:20px;font-size:20px; font-family:Franklin Gothic Medium;">
+YOUR CART 
+</p><hr><hr></b>
+<br><br>
+<a href="/users/" style="text-decoration:none; width:20%; "><button class=" btn-lg btn-primary">Back to shopping</button></a>
+<br><br>
+<%
+
+if(cartitem.length >0){
+    let total	 =0
+	cartitem.forEach((cartitem)=>
+	{
+        let fid= cartitem.f_id;
+        let rid = cartitem.r_id;
+
+        let  food_detail = foodMap.get(fid)         
+        
+          food_detail.forEach((foodDetail)=>{
+            let src = "../../images/shop/food/" + foodDetail.image
+            let total_price =  cartitem.quantity * foodDetail.price;
+            total =total+total_price;  
+            %>
+            <div class="container-fluid" style="border-bottom: 1px solid red;">
+              <div class="row">
+                  <div class=" col-lg-3 col-md-4 col-12">
+                      <img src="<%= src %>" class=" img-fluid" style="width: 270px; height: 180px; margin: 0 120px 30px 30px;">
+                  </div>
+                  <div class="clo-lg-9 col-md-8 col-12">
+                      <div class="row"> <div><h1><%= foodDetail.name; %>  </h1></div> <div class="ml-auto"><h2>Rs <%= total_price; %>/- </h2></div></div>
+                      <div><h3>QUANTITY = <%= cartitem.quantity  %></h3>
+                          <h3>rate = Rs <%= foodDetail.price ;%> /-</h3></div>
+                      <form action="/remove_from_cart/<%= fid %>" method="post" > 
+                          <input type="submit" value=" REMOVE "
+                          style="cursor:pointer; font-size:20px; font-weight:bold; color:white; border:3 px solid blue; background-color :blue; border-radius:10px;
+                            padding:5px; padding-left:20px; padding-right:20px;">
+                      </form>
+                  </div>
+              </div>
+          </div>
+          <%
+        })
+    })
+    %>
+    
+
+    <br><br>
+
+
+    <div class="row">
+    <div class="col-lg-4 col-md-4 col-12"></div>
+    <div class="col-lg-4 col-md-4 col-12">
+        <div>
+            <h4><div class="row">   
+                <div > TOTAL PRICE </div>
+                 <div class="ml-auto">Rs <%=  total; %>/- </div> 
+                 </div>
+            </h4>
+            <h4><div class="row">   
+                <div > SERVICE CHARGE </div>
+                 <div class="ml-auto">Rs <% let service = 5*total/100 %> <%= service; %>/- </div> </div>
+            </h4><h4><div class="row">   
+                <div > GST (9%) </div>
+                 <div class="ml-auto">Rs <% let gst = 9*total/100 %> <%= gst; %>/- </div> </div>
+            </h4><h4><div class="row">   
+                <div > DELIVERY </div>
+                 <div class="ml-auto">Rs 20/- </div> </div>
+            </h4><hr>
+            <h4><div class="row">   
+                <div > AMOUNT TO PAY </div>
+                 <div class="ml-auto">Rs <% let groce_total=total+service+gst+20; %> <%= groce_total;%>/-</div> </div>
+            </h4><hr>
+            
+            <form action="/users/checkout/<%= groce_total %>/<%= rid %>" method="post">
+            <input type="submit" value="                Proceed to Checkout              "
+                       style="cursor:pointer; font-size:27px; font-weight:bold; border:3 px solid blue; background-color :green;
+                        padding:5px; padding-left:20px; padding-right:20px;">
+            </form>
+            </div>
+    </div>
+    <div class="col-lg-4 col-md-4 col-12"></div>
+  </div>
+
+
+
+    <%
+}
+else
+{
+  %><center><h1 class=" text-center mt-5">your cart is empty</h1></center><%
+}
+%>
+
+</body>
+</html>

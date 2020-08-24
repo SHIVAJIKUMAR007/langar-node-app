@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <% include ./bootstrap.ejs %>
+    <link rel="shortcut icon" href="./images/langar/logo.ico" type="image/x-icon">
+    <title> welcome to langar</title>
+</head>
+<body>
+
+    <!-- top portion very important  -->
+    
+    <div class="container-fluid" style="background-image: url('../images/pizza.jpg');">
+        <nav class="navbar navbar-expand-lg navbar-light bg-transparent">
+            <a class="navbar-brand" href="/users/"> <img src="../images/langar/logo.jfif" style="width:7vw;" class="img-fluid "> </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+              <div class="navbar-nav ml-auto">
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/users/order/"><h3>MY ORDERS </h3></a>
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/users/cart/"><h3>CART </h3></a>
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/users/rate/"><h3>RATE US </h3></a>
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/users/contact/"><h3>CONTACT </h3></a>
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/users/help/"><h3>HELP </h3></a>
+                <a class="nav-item nav-link text-center text-warning mx-5" href="/logout/"><h3>LOGOUT </h3></a>
+              </div>
+            </div>
+          </nav>
+
+        <div class="pl-5 mt-5 pb-5 mb-sm-5 mb-lg-5 pb-lg-5 pb-md-5 pb-sm-5 mt-lg-5  pt-lg-5 ">
+                <h2 style="font-size:6vw;"  class=" text-danger">Zomato se accha</h2> 
+                <h2 style="font-size:6vw;" class=" text-danger">Swiggy se behtar</h2> 
+        </div>
+    </div>
+    
+        <!-- top portion very important  -->
+    
+        <div class="my-3 pb-3 pt-1" style="background-color: maroon;">
+             <% if(resdata.length >0 ){
+                  resdata.forEach(function (result) {
+                    var src = "../images/shop/" + result.image 
+                    %> 
+                      <a href="/users/restaurant/<%= result.r_id %>"  style="text-decoration: none;">
+                        <div class="mt-5 bg-warning  px-3 mx-3" style="border: 1px solid black; border-radius: 10px; ">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-3 col-5">
+                                 <img src = <%= src %> class="img-fluid w-100 p-3 ">
+                            </div>
+
+                            <div class=" col-lg-9 col-md-9 col-7">
+                                 <h1 class=" mt-5 mb-3 text-center" style="color: black;">
+                                   <%= result.name %>, <%= result.address %>
+                                 </h1>
+                                 <h3 class=" mt-2 mb-3 text-center" style="color: black;">
+                                   <%=  result.tagline  %> 
+                                 </h3>
+                                
+                                  <h2 style="color:green;" class=" text-center my-3">
+                                    ★  <%= result.av_rate  %> ( <%= result.num_of_rate  %> reviews )
+                                  </h2> 
+     
+                                 <center><button class="btn btn-danger mb-1">
+                                  VISIT TO RESTAURANT
+                                  </button></center>
+                            </div>
+                        </div>
+                        </div>   
+                      </a>
+                    <%
+                  })
+             } %> 
+
+        </div>
+<div class="mx-3">
+
+    
+
+  <h1 style="font-weight:bold;margin-bottom:0px;"> ABOUT US</h1>
+<hr/>
+<h2>Terms of Service:</h2>
+<table class="table " style="font-size:20px;margin-right:0px;">
+<tr>
+ <td>1. Acceptance of terms</td>
+ <td>2.eligibility to use the service</td>
+ <td>3.changes to the terms</td>
+</tr>
+<tr>
+<td>4.translation of terms<td>
+<td>
+ 5.provision of the services being offered by Langar</td>
+ <td>
+ 6.use of services by you or user</td>
+</tr>
+<tr>
+<td>
+ 7.Content guidelines and privacy policy</td><td>8.Restrictions on use</td><td>9.User feedback</td></tr>
+ <tr><td>10.Advertising</td><td>11.Additional terms and conditions</td></tr>
+</p>
+  
+</div>
+
+</body>
+</html>
+
+
